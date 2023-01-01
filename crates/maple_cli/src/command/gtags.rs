@@ -8,11 +8,11 @@ use clap::Parser;
 #[derive(Parser, Debug, Clone)]
 pub struct Gtags {
     /// Initial query string
-    #[clap(index = 1, long)]
+    #[clap(short, long)]
     query: String,
 
     /// File path of current vim buffer.
-    #[clap(index = 2, long)]
+    #[clap(short, long)]
     cwd: AbsPathBuf,
 
     /// Search the reference tags.

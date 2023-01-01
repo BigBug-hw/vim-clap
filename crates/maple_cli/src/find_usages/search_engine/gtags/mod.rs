@@ -69,6 +69,7 @@ impl GtagsSearcher {
         let exit_status = self
             .gtags()
             .env("GTAGSLABEL", "native-pygments")
+            .env("GTAGSCONF", "/usr/local/share/gtags/gtags.conf")
             .cwd(&self.project_root)
             .arg(&self.db_path)
             .join()?;
@@ -87,6 +88,7 @@ impl GtagsSearcher {
         let exit_status = self
             .global()
             .env("GTAGSLABEL", "native-pygments")
+            .env("GTAGSCONF", "/usr/local/share/gtags/gtags.conf")
             .cwd(&self.project_root)
             .arg("--update")
             .join()?;

@@ -10,6 +10,7 @@ use super::Notification;
 use crate::stdio_server::impls::dumb_jump::DumbJumpProvider;
 use crate::stdio_server::impls::filer::FilerProvider;
 use crate::stdio_server::impls::recent_files::RecentFilesProvider;
+use crate::stdio_server::impls::projects::ProjectsProvider;
 use crate::stdio_server::impls::DefaultProvider;
 use crate::stdio_server::rpc::{Call, MethodCall};
 use crate::stdio_server::session::SessionContext;
@@ -161,6 +162,24 @@ impl SessionClient {
             "filer/on_typed" => {
                 let mut session_manager = self.session_manager_mutex.lock();
                 // TODO: send_and_wait_result
+                session_manager.send(msg.session_id, OnMove(msg));
+                None
+            }
+
+            "projects/on_init" => {
+                let mut session_manager = self.session_manager_mutex.lock();
+                let call = Call::MethodCall(msg);
+                let context: SessionContext = call.clone().into();
+                session_manager.new_session(call, Box::new(ProjectsProvider::new(context)));
+                None
+            }
+            "projects/on_typed" => {
+                let mut session_manager = self.session_manager_mutex.lock();
+                session_manager.send(msg.session_id, OnTyped(msg));
+                None
+            }
+            "projects/on_move" => {
+                let mut session_manager = self.session_manager_mutex.lock();
                 session_manager.send(msg.session_id, OnMove(msg));
                 None
             }

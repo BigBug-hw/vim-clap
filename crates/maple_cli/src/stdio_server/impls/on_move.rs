@@ -37,6 +37,7 @@ impl Position {
 pub enum OnMove {
     Commit(String),
     Files(PathBuf),
+    Project(PathBuf),
     Filer(PathBuf),
     History(PathBuf),
     Grep(Position),
@@ -64,6 +65,7 @@ impl OnMove {
             },
             "files" | "git_files" => Self::Files(build_abs_path(&context.cwd, &curline)),
             "recent_files" => Self::Files(PathBuf::from(&curline)),
+            "project" => Self::Project(PathBuf::from(&curline)),
             "history" => {
                 if curline.starts_with('~') {
                     Self::History(crate::utils::expand_tilde(curline))
@@ -199,6 +201,7 @@ impl<'a> OnMoveHandler<'a> {
                 }
             }
             Files(path) | History(path) => self.preview_file(&path)?,
+            Project(path) => self.preview_directory(&path)?,
             BLines(position) | Grep(position) | ProjTags(position) | BufferTags(position) => {
                 self.preview_file_at(position).await
             }

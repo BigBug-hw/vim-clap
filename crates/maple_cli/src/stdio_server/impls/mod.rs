@@ -21,7 +21,7 @@ use crate::stdio_server::{write_response, MethodCall};
 
 pub use self::on_create::initialize;
 pub use self::on_move::{OnMove, OnMoveHandler};
-pub use self::providers::{dumb_jump, filer, recent_files};
+pub use self::providers::{dumb_jump, filer, recent_files, projects};
 
 #[derive(Debug)]
 pub struct DefaultProvider {

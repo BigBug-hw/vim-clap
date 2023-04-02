@@ -6,6 +6,7 @@ mod generic_provider;
 mod grep;
 mod tagfiles;
 // mod interactive_grep;
+mod projects;
 mod recent_files;
 
 pub use self::filer::read_dir_entries;
@@ -45,6 +46,7 @@ pub async fn create_provider(provider_id: &str, ctx: &Context) -> Result<Box<dyn
         // )),
         "recent_files" => Box::new(recent_files::RecentFilesProvider::new(ctx)),
         "tagfiles" => Box::new(tagfiles::TagfilesProvider::new()),
+        "projects" => Box::new(projects::ProjectsProvider::new()),
         _ => Box::new(generic_provider::GenericProvider::new()),
     };
     Ok(provider)
